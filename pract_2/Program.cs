@@ -6,7 +6,7 @@ using (ApplicationContext db = new ApplicationContext())
     var users = db.Employees
         .Include(u => u.Position) // Загружаем позиции сотрудников
             .ThenInclude(pos => pos.Department); // Загружаем отделы для позиций
-    Console.WriteLine($"вв");
+    
     foreach (var user in users)
     {
         Console.WriteLine($"1");
