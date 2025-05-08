@@ -1,2 +1,16 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Microsoft.EntityFrameworkCore;
+
+using (ApplicationContext db = new ApplicationContext())
+{
+    // Получаем всех сотрудников вместе с их позициями и отделами
+    var users = db.Employees
+        .Include(u => u.Position) // Загружаем позиции сотрудников
+            .ThenInclude(pos => pos.Department); // Загружаем отделы для позиций
+    Console.WriteLine($"вв");
+    foreach (var user in users)
+    {
+        Console.WriteLine($"1");
+        Console.WriteLine($"{user.FirstName} {user.LastName} - {user.Position?.PositionsName}");
+        Console.WriteLine("----------------------"); // Для красоты
+    }
+}

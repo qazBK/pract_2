@@ -1,83 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-
-namespace pract_2;
-
-public partial class CompaniContext : DbContext
+﻿using Microsoft.EntityFrameworkCore;
+ 
+public class ApplicationContext : DbContext
 {
-    public CompaniContext()
-    {
-    }
+    
+    public /*virtual*/ DbSet<Department> Departments { get; set; }
 
-    public CompaniContext(DbContextOptions<CompaniContext> options)
-        : base(options)
-    {
-    }
+    public /*virtual*/ DbSet<Employee> Employees { get; set; }
 
-    public virtual DbSet<Department> Departments { get; set; }
-
-    public virtual DbSet<Employee> Employees { get; set; }
-
-    public virtual DbSet<Position> Positions { get; set; }
+    public /*virtual*/ DbSet<Position> Positions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Compani;Username=postgres;Password=1111");
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Department>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("department_pkey");
-
-            entity.ToTable("department");
-
-            entity.Property(e => e.Id)
-                .UseIdentityAlwaysColumn()
-                .HasColumnName("id");
-            entity.Property(e => e.DepartmentName).HasColumnName("department_name");
-        });
-
-        modelBuilder.Entity<Employee>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("employees_pkey");
-
-            entity.ToTable("employees");
-
-            entity.Property(e => e.Id)
-                .UseIdentityAlwaysColumn()
-                .HasColumnName("id");
-            entity.Property(e => e.FirstName).HasColumnName("first_name");
-            entity.Property(e => e.LastName).HasColumnName("last_name");
-            entity.Property(e => e.PositionId).HasColumnName("position_id");
-
-            entity.HasOne(d => d.Position).WithMany(p => p.Employees)
-                .HasForeignKey(d => d.PositionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("position_empeti");
-        });
-
-        modelBuilder.Entity<Position>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("positions_pkey");
-
-            entity.ToTable("positions");
-
-            entity.Property(e => e.Id)
-                .UseIdentityAlwaysColumn()
-                .HasColumnName("id");
-            entity.Property(e => e.DepartmentId).HasColumnName("department_id");
-            entity.Property(e => e.PositionsName).HasColumnName("positions_name");
-
-            entity.HasOne(d => d.Department).WithMany(p => p.Positions)
-                .HasForeignKey(d => d.DepartmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("departament_position");
-        });
-
-        OnModelCreatingPartial(modelBuilder);
+        optionsBuilder.UseSqlite("Data Source=Company.db");
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Department>()
+            .HasMany(d => d.Positions)
+            .WithOne(p => p.Department)
+            .HasForeignKey(p => p.DepartmentId);
+
+        modelBuilder.Entity<Position>()
+            .HasMany(p => p.Employees)
+            .WithOne(e => e.Position)
+            .HasForeignKey(e => e.PositionId);
+    }*/
+}
+
+ 
+
+public partial class Department
+{
+    public int Id { get; set; }
+
+    public string DepartmentName { get; set; } = null!;
+
+    public virtual ICollection<Position> Positions { get; set; } = new List<Position>();
+}
+public partial class Employee
+{
+    public int Id { get; set; }
+
+    public string FirstName { get; set; } = null!;
+
+    public string LastName { get; set; } = null!;
+
+    public int PositionId { get; set; }
+
+    public virtual Position Position { get; set; } = null!;
+}
+public partial class Position
+{
+    public int Id { get; set; }
+
+    public int DepartmentId { get; set; }
+
+    public string PositionsName { get; set; } = null!;
+
+    public virtual Department Department { get; set; } = null!;
+
+    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 }
