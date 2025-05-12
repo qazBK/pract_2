@@ -36,7 +36,7 @@ public partial class Department
 
     public string DepartmentName { get; set; } = null!;
 
-    public virtual ICollection<Position> Positions { get; set; } = new List<Position>();
+    public List<Position> Positions { get; set; } = new List<Position>();
 }
 public partial class Employee
 {
@@ -48,7 +48,7 @@ public partial class Employee
 
     public int PositionId { get; set; }
 
-    public virtual Position Position { get; set; } = null!;
+    public virtual Position? Position { get; set; } = null!;
 }
 public partial class Position
 {
@@ -58,7 +58,7 @@ public partial class Position
 
     public string PositionsName { get; set; } = null!;
 
-    public virtual Department Department { get; set; } = null!;
+    public virtual Department? Department { get; set; }
 
-    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
+    public List<Employee> Employees { get; set; } = new List<Employee>();
 }
