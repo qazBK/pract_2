@@ -36,7 +36,7 @@ public partial class Department
 
     public string DepartmentName { get; set; } = null!;
 
-    public List<Position> Positions { get; set; } = new List<Position>();
+    public virtual List<Position> Positions { get; set; } = new List<Position>();
 }
 public partial class Employee
 {
@@ -60,5 +60,5 @@ public partial class Position
 
     public virtual Department? Department { get; set; }
 
-    public List<Employee> Employees { get; set; } = new List<Employee>();
+    public virtual List<Employee> Employees { get; set; } = new List<Employee>();
 }

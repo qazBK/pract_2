@@ -11,7 +11,8 @@ public class ApplicationContext_3 : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=Compan.db");
+        optionsBuilder.UseLazyLoadingProxies()
+        .UseSqlite("Data Source=Company3.db");
     }
 
   

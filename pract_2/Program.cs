@@ -188,27 +188,20 @@ using (ApplicationContext_3 db = new ApplicationContext_3())
 
 }
 
-
+//--------------------------------------------------------------------------------------------------------
 
 using (ApplicationContext_3 db = new ApplicationContext_3())
 {
-    // Получаем всех сотрудников
-    var users = db.Employees.ToList(); // Загружаем сотрудников
+   
 
-    Console.WriteLine("-----------Explicit loading-----------");
+    Console.WriteLine("-----------Lazy loading-----------");
 
-    foreach (var user in users)
-    {
-        // Явно загружаем позицию сотрудника
-        db.Entry(user).Reference(u => u.Position).Load();
+    var users = db.Employees.ToList();
+    foreach (Employee user in users)
 
-        // Если позиция загружена, явно загружаем отдел
-        if (user.Position != null)
-        {
-            db.Entry(user.Position).Reference(pos => pos.Department).Load();
-        }
 
-        Console.WriteLine($"{user.FirstName} {user.LastName}\nДолжность:  {user.Position?.PositionsName}\nОтдел: {user.Position?.Department?.DepartmentName} ");
-        Console.WriteLine("----------------------"); // Для красоты
-    }
+
+    Console.WriteLine($"{user.FirstName} {user.LastName}\nДолжность:  {user.Position?.PositionsName}\nОтдел: {user.Position?.Department?.DepartmentName} ");
+    Console.WriteLine("----------------------"); // Для красоты
+    
 }

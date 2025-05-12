@@ -11,7 +11,7 @@ public class ApplicationContext_2 : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=Compan.db");
+        optionsBuilder.UseSqlite("Data Source=Company2.db");
     }
 
   
