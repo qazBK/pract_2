@@ -14,18 +14,7 @@ public class ApplicationContext : DbContext
         optionsBuilder.UseSqlite("Data Source=Company.db");
     }
 
-    /*protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Department>()
-            .HasMany(d => d.Positions)
-            .WithOne(p => p.Department)
-            .HasForeignKey(p => p.DepartmentId);
-
-        modelBuilder.Entity<Position>()
-            .HasMany(p => p.Employees)
-            .WithOne(e => e.Position)
-            .HasForeignKey(e => e.PositionId);
-    }*/
+   
 }
 
  

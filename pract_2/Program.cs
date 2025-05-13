@@ -41,7 +41,8 @@ using (ApplicationContext db = new ApplicationContext())
     Employee Employee_8 = new Employee { FirstName = "Антон", LastName = "Татыржа", Position = Sales_managerer };
     Employee Employee_9 = new Employee { FirstName = "Кирил", LastName = "Барано", Position = Marketer };
     Employee Employee_10 = new Employee { FirstName = "Константин", LastName = "Смерч", Position = Content_Specialist };
-    Employee Employee_11 = new Employee { FirstName = "Арту", LastName = "Пирпжков", Position = Development_Frontend };
+    Employee Employee_11 = new Employee { FirstName = "Арту", LastName = "Пирожков", Position = Development_Frontend };
+
     db.Employees.AddRange(Employee_1, Employee_2, Employee_3, Employee_4, Employee_5, Employee_6, Employee_7, Employee_8, Employee_9, Employee_10, Employee_11);
 
 
@@ -52,16 +53,16 @@ using (ApplicationContext db = new ApplicationContext())
 
 
 using (ApplicationContext db = new ApplicationContext())
-{    // Получаем всех сотрудников вместе с их позициями и отделами
+{    
     var users = db.Employees
-        .Include(u => u.Position) // Загружаем позиции сотрудников
-            .ThenInclude(pos => pos.Department); // Загружаем отделы для позиций
+        .Include(u => u.Position) 
+            .ThenInclude(pos => pos.Department); 
     Console.WriteLine("-----------Eager loading-----------");
     foreach (var user in users)
     {
         
         Console.WriteLine($"{user.FirstName} {user.LastName}\nДолжность:  {user.Position?.PositionsName}\nОтдел: {user.Position?.Department?.DepartmentName} ");
-        Console.WriteLine("----------------------"); // Для красоты
+        Console.WriteLine("----------------------"); 
     }
 }//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -104,7 +105,8 @@ using (ApplicationContext_2 db = new ApplicationContext_2())
     Employee Employee_8 = new Employee { FirstName = "Антон", LastName = "Татыржа", Position = Sales_managerer };
     Employee Employee_9 = new Employee { FirstName = "Кирил", LastName = "Барано", Position = Marketer };
     Employee Employee_10 = new Employee { FirstName = "Константин", LastName = "Смерч", Position = Content_Specialist };
-    Employee Employee_11 = new Employee { FirstName = "Арту", LastName = "Пирпжков", Position = Development_Frontend };
+    Employee Employee_11 = new Employee { FirstName = "Арту", LastName = "Пирожков", Position = Development_Frontend };
+
     db.Employees.AddRange(Employee_1, Employee_2, Employee_3, Employee_4, Employee_5, Employee_6, Employee_7, Employee_8, Employee_9, Employee_10, Employee_11);
 
 
@@ -126,14 +128,14 @@ using (ApplicationContext_2 db = new ApplicationContext_2())
         // Явно загружаем позицию сотрудника
         db.Entry(user).Reference(u => u.Position).Load();
 
-        // Если позиция загружена, явно загружаем отдел
+        // Если Position загружена, явно загружаем отдел
         if (user.Position != null)
         {
             db.Entry(user.Position).Reference(pos => pos.Department).Load();
         }
 
         Console.WriteLine($"{user.FirstName} {user.LastName}\nДолжность:  {user.Position?.PositionsName}\nОтдел: {user.Position?.Department?.DepartmentName} ");
-        Console.WriteLine("----------------------"); // Для красоты
+        Console.WriteLine("----------------------"); 
     }
 }
 
@@ -180,7 +182,7 @@ using (ApplicationContext_3 db = new ApplicationContext_3())
     Employee Employee_8 = new Employee { FirstName = "Антон", LastName = "Татыржа", Position = Sales_managerer };
     Employee Employee_9 = new Employee { FirstName = "Кирил", LastName = "Барано", Position = Marketer };
     Employee Employee_10 = new Employee { FirstName = "Константин", LastName = "Смерч", Position = Content_Specialist };
-    Employee Employee_11 = new Employee { FirstName = "Арту", LastName = "Пирпжков", Position = Development_Frontend };
+    Employee Employee_11 = new Employee { FirstName = "Арту", LastName = "Пирожков", Position = Development_Frontend };
     db.Employees.AddRange(Employee_1, Employee_2, Employee_3, Employee_4, Employee_5, Employee_6, Employee_7, Employee_8, Employee_9, Employee_10, Employee_11);
 
 
@@ -188,20 +190,18 @@ using (ApplicationContext_3 db = new ApplicationContext_3())
 
 }
 
-//--------------------------------------------------------------------------------------------------------
+
 
 using (ApplicationContext_3 db = new ApplicationContext_3())
 {
-   
+
 
     Console.WriteLine("-----------Lazy loading-----------");
 
     var users = db.Employees.ToList();
-    foreach (Employee user in users)
-
-
-
-    Console.WriteLine($"{user.FirstName} {user.LastName}\nДолжность:  {user.Position?.PositionsName}\nОтдел: {user.Position?.Department?.DepartmentName} ");
-    Console.WriteLine("----------------------"); // Для красоты
+    foreach (Employee user in users) {
+        Console.WriteLine($"{user.FirstName} {user.LastName}\nДолжность:  {user.Position?.PositionsName}\nОтдел: {user.Position?.Department?.DepartmentName} ");
+        Console.WriteLine("----------------------"); 
+    }
     
 }
